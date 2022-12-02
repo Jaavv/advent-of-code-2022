@@ -1,15 +1,25 @@
+// https://adventofcode.com/2022/day/1
+
 fun main() {
     fun part1(input: List<String>): Int {
         val calories = mutableListOf<Int>()
         var acc = 0
-        for (i in input) {
-           if (i == "")  {
-               calories.add(acc)
-               acc = 0
-           } else {
-               acc += i.toInt()
-           }
+        input.forEach {
+            if (it.isBlank()) {
+                calories.add(acc)
+                acc = 0
+            } else {
+                acc += it.toInt()
+            }
         }
+//        for (i in input) {
+//           if (i == "")  {
+//               calories.add(acc)
+//               acc = 0
+//           } else {
+//               acc += i.toInt()
+//           }
+//        }
         return calories.max()
     }
 
