@@ -5,6 +5,8 @@ fun main() {
     val testinput = readInput("Day02_test")
     println(Day02Part1(input)) // 12276
     println(Day02Part2(input)) // 9975
+    println(day02part1op(input))
+    println(day02part2op(input))
 }
 
 fun rock(vs: String): Int {
@@ -93,5 +95,61 @@ fun Day02Part2(input: List<String>): Int {
     return input.sumOf { round ->
         val hands = round.split(" ")
         RPSpart2(hands.first(), hands.last())
+    }
+}
+
+
+// optimized attempt
+fun rps(hands: Pair<String, String>): Int {
+    val score = when (hands) {
+        Pair("A", "Y"), Pair("B", "Z"), Pair("C", "X") -> 6
+        Pair("A", "X"), Pair("B", "Y"), Pair("C", "Z") -> 3
+        Pair("A", "Z"), Pair("B", "X"), Pair("C", "Y") -> 0
+        else -> 0
+    }
+    val shape = when (hands.second) {
+        "X" -> 1
+        "Y" -> 2
+        "Z" -> 3
+        else -> 0
+    }
+    return score + shape
+}
+
+fun wld(hands: Pair<String, String>): Int {
+    return when (hands.second) {
+        "X" -> when (hands.first) {
+            "A" -> rps(Pair("A", "Z"))
+            "B" -> rps(Pair("B", "X"))
+            "C" -> rps(Pair("C", "Y"))
+            else -> 0
+        }
+        "Y" -> when (hands.first) {
+            "A" -> rps(Pair("A", "X"))
+            "B" -> rps(Pair("B", "Y"))
+            "C" -> rps(Pair("C", "Z"))
+            else -> 0
+        }
+        "Z" -> when (hands.first) {
+            "A" -> rps(Pair("A", "Y"))
+            "B" -> rps(Pair("B", "Z"))
+            "C" -> rps(Pair("C", "X"))
+            else -> 0
+        }
+        else -> 0
+    }
+}
+
+fun day02part1op(input: List<String>): Int {
+    return input.sumOf { round ->
+        val hands = round.split(" ")
+        rps(Pair(hands.first(), hands.last()))
+    }
+}
+
+fun day02part2op(input: List<String>): Int {
+    return input.sumOf { round ->
+        val hands = round.split(" ")
+        wld(Pair(hands.first(), hands.last()))
     }
 }
