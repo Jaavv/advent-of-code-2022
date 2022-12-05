@@ -11,14 +11,14 @@ fun main() {
     val parsedCrates = parseCrates(paddedCrates)
     val moves = parse.slice(emptySpaceIndex + 1 until parse.size)
     val initialStackPart1 = List(parsedCrates.size) { index -> index + 1 to parsedCrates[index] }.toMap()
-    val initialStackPart2 = initialStackPart1.toMap()
+    val initialStackPart2 = initialStackPart1.map { it.key to it.value.toMutableList() }.toMap() // deepcopy
 
-//    day05Part1(moves, initialStackPart1)
-//    val finalStackPart1 = initialStackPart1.values.joinToString("") { it.last() }
-//    println(finalStackPart1) //LJSVLTWQM
+    day05Part1(moves, initialStackPart1)
+    val finalStackPart1 = initialStackPart1.values.joinToString("") { it.last() }
+    println(finalStackPart1) //LJSVLTWQM
 
-    day05Part2(moves, initialStackPart1)
-    val finalStackPart2 = initialStackPart1.values.joinToString("") { it.last() }
+    day05Part2(moves, initialStackPart2)
+    val finalStackPart2 = initialStackPart2.values.joinToString("") { it.last() }
     println(finalStackPart2) //BRQWDBBJM
 }
 
