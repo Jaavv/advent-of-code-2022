@@ -1,5 +1,9 @@
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTimedValue
+
 // https://adventofcode.com/2022/day/4
 
+@OptIn(ExperimentalTime::class)
 fun main() {
     val input = readInput("Day04")
     val testinput = readInput("Day04_test")
@@ -7,6 +11,18 @@ fun main() {
     println(day04Part1(input)) //542
     println(day04Part2(testinput)) //4
     println(day04Part2(input)) //900
+
+    val timeOfCount = measureTimedValue {
+        day04partCount(input, ::coveredSection)
+        day04partCount(input, ::overlap)
+    }
+    println("function Count, Duration: ${timeOfCount.duration}") // function Count, Duration: 12.881300ms
+
+    val timeOfFilterSize = measureTimedValue {
+        day04partFilterSize(input, ::coveredSection)
+        day04partFilterSize(input, ::overlap)
+    }
+    println("function FilterSize, Duration: ${timeOfFilterSize.duration}") // function FilterSize, Duration: 4.876800ms
 
 }
 
@@ -25,4 +41,12 @@ fun overlap(inp: String): Boolean {
 }
 fun day04Part2(input: List<String>): Int {
     return input.filter { overlap(it) }.size
+}
+
+fun day04partCount(input: List<String>, func: (String) -> Boolean): Int {
+    return input.count { func(it) }
+}
+
+fun day04partFilterSize(input: List<String>, func: (String) -> Boolean): Int {
+    return input.filter { func(it) }.size
 }
